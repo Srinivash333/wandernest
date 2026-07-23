@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WANDERNEST</title>
+</head>
+<body>
+
+    <h2>Create New Listing</h2>
+
+    <form action="/listings" method="POST">
+
+        <label for="title">Title</label><br>
+        <input
+            type="text"
+            id="title"
+            name="listing[title]"
+            placeholder="Enter title"
+        >
+        <br><br>
+
+        <label for="description">Description</label><br>
+        <textarea
+            id="description"
+            name="listing[description]"
+            placeholder="Enter description"
+        ></textarea>
+        <br><br>
+
+        <label for="image">Image URL</label><br>
+        <input
+            type="text"
+            id="image"
+            name="listing[image][url]"
+            placeholder="Enter image URL"
+        >
+        <br><br>
+
+        <label for="price">Price</label><br>
+        <input
+            type="number"
+            id="price"
+            name="listing[price]"
+            placeholder="Enter price"
+            min="0"
+        >
+        <br><br>
+
+        <label for="location">Location</label><br>
+        <input
+            type="text"
+            id="location"
+            name="listing[location]"
+            placeholder="Enter location"
+        >
+        <br><br>
+
+        <label for="country">Country</label><br>
+        <input
+            type="text"
+            id="country"
+            name="listing[country]"
+            placeholder="Enter country"
+        >
+        <br><br>
+
+        <button type="submit">Add Listing</button>
+
+    </form>
+
+</body>
+</html>

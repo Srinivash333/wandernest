@@ -42,6 +42,15 @@ app.get("/listings", async (req, res) => {
 
 
 
+// new route 
+
+app.get("/listings/new",(req,res)=>{
+    res.render("listings/new");
+})
+
+
+
+
 // show route  reading a single listing
 
 app.get("/listings/:id",async(req,res)=>{
@@ -49,6 +58,21 @@ app.get("/listings/:id",async(req,res)=>{
     const listing = await Listing.findById(id);
     res.render("listings/show",{listing});
 });
+
+
+//create route 
+
+app.post("/listings", async (req, res) => {
+    //console.log(req.body);          // Print the entire request body
+    //console.log(req.body.listing);  // Print the listing object
+
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+
+    res.redirect("/listings");
+});
+
+
 
 
 
