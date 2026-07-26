@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WANDERNEST</title>
+</head>
+<body>
+
+    <h2>Edit Listing</h2>
+
+    <form method="POST"  action="/listings/<%= listing._id %>?_method=PUT" >
+
+        <label for="title">Title</label><br>
+        <input
+            type="text"
+            name="listing[title]"
+            value="<%= listing.title %>"
+        >
+        <br><br>
+
+        <label for="description">Description</label><br>
+        <textarea
+            name="listing[description]"
+            value="<%= listing.description %>"
+        ></textarea>
+        <br><br>
+
+        <label for="image">Image URL</label><br>
+        <input
+            type="text"
+            name="listing[image][url]"
+            value="<%= listing.image.url %>"    
+        >
+        <br><br>
+
+        <label for="price">Price</label><br>
+        <input
+            type="number"
+            name="listing[price]"
+            value="<%= listing.price %>"
+            min="0"
+        >
+        <br><br>
+
+        <label for="location">Location</label><br>
+        <input
+            type="text"
+            name="listing[location]"
+            value="<%= listing.location %>"
+        >
+        <br><br>
+
+        <label for="country">Country</label><br>
+        <input
+            type="text"
+            name="listing[country]"
+            value="<%= listing.country %>"
+        >
+        <br><br>
+
+        <button type="submit">Edit</button>
+
+    </form>
+
+</body>
+</html>
