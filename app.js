@@ -67,14 +67,19 @@ app.get("/listings/:id",async(req,res)=>{
 
 //create route 
 
-app.post("/listings", async (req, res) => {
+app.post("/listings", async (req, res,next) => {
     //console.log(req.body);          // Print the entire request body
     //console.log(req.body.listing);  // Print the listing object
 
-    const newListing = new Listing(req.body.listing);
+   try{
+     const newListing = new Listing(req.body.listing);
     await newListing.save();
 
     res.redirect("/listings");
+   }
+   catch(err){
+    next(err);
+   }
 });
 
 
@@ -116,6 +121,11 @@ app.delete("/listings/:id",async(req,res)=>{
 //      console.log("sample was saved");
 //     res.send("Successfull testing");
 // });
+
+
+app.use((err,req,res,next)=>{
+    res.send("Something went wrong");
+});
 
 
 
