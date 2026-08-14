@@ -5,6 +5,7 @@ const Listing = require("./models/listing.js");
 const path=require("path");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
+const wrapAsync=require("./utils/wrapAsync.js");
 
 const MONG_URL = "mongodb://127.0.0.1:27017/wandernest";
 
@@ -67,20 +68,12 @@ app.get("/listings/:id",async(req,res)=>{
 
 //create route 
 
-app.post("/listings", async (req, res,next) => {
-    //console.log(req.body);          // Print the entire request body
-    //console.log(req.body.listing);  // Print the listing object
-
-   try{
-     const newListing = new Listing(req.body.listing);
+app.post("/listings", wrapAsync(async (req, res, next) => {
+    const newListing = new Listing(req.body.listing);
     await newListing.save();
 
     res.redirect("/listings");
-   }
-   catch(err){
-    next(err);
-   }
-});
+}));
 
 
 // Edit route
