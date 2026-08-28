@@ -7,7 +7,7 @@ const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
-const {listingSchema}=require("./schema.js");
+const {listingSchema,reviewSchema}=require("./schema.js");
 const Review=require("./models/review.js");
 
 const MONG_URL = "mongodb://127.0.0.1:27017/wandernest";
@@ -45,6 +45,19 @@ app.get("/",(req,res)=>{
 
 const validateListing = (req, res, next) =>{
     let {error} = listingSchema.validate(req.body);
+    if (error) {
+        let msg = error.details.map(el => el.message).join(",");
+        throw new ExpressError(400, msg);
+    }
+    else
+    {
+        next();
+    }
+};
+
+
+const validateReview = (req, res, next) =>{
+    let {error} = reviewSchema.validate(req.body);
     if (error) {
         let msg = error.details.map(el => el.message).join(",");
         throw new ExpressError(400, msg);
@@ -123,7 +136,7 @@ app.delete("/listings/:id", validateListing, wrapAsync(async(req,res)=>{
 
 //Review Route
 //post route to create a new review for a listing
-app.post("/listings/:id/reviews", async(req,res)=>{
+app.post("/listings/:id/reviews",validateReview, wrapAsync(async(req,res)=>{
     let listing=await Listing.findById(req.params.id);
     let newReview=new Review(req.body.review);
 
@@ -133,7 +146,7 @@ app.post("/listings/:id/reviews", async(req,res)=>{
     res.redirect(`/listings/${listing._id}`);
 
 
-});
+}));
 
 
 // app.get("/testListing", async(req,res)=>{
