@@ -8,6 +8,7 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
 const {listingSchema}=require("./schema.js");
+const Review=require("./models/review.js");
 
 const MONG_URL = "mongodb://127.0.0.1:27017/wandernest";
 
@@ -118,6 +119,21 @@ app.delete("/listings/:id", validateListing, wrapAsync(async(req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+
+//Review Route
+//post route to create a new review for a listing
+app.post("/listings/:id/reviews", async(req,res)=>{
+    let listing=await Listing.findById(req.params.id);
+    let newReview=new Review(req.body.review);
+
+    listing.reviews.push(newReview);    
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${listing._id}`);
+
+
+});
 
 
 // app.get("/testListing", async(req,res)=>{
