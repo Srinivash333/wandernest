@@ -1,18 +1,89 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-chisel fa-regular fa-house"></i>
-    <button class="navbar-toggler" 
-    type="button" data-bs-toggle="collapse" 
-    data-bs-target="#navbarNavAltMarkup" 
-    >
-    <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-md bg-white border-bottom sticky-top py-2 main-navbar">
+  <div class="container-fluid px-3 px-md-5">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+      <i class="fa-solid fa-compass brand-icon"></i>
+      <span class="brand-text">wandernest</span>
+    </a>
+
+    <!-- Center Search Bar (Airbnb Style) -->
+    <form class="d-none d-md-flex search-bar-container align-items-center mx-auto" action="/listings" method="GET">
+      <input 
+        type="text" 
+        name="search" 
+        class="form-control border-0 shadow-none search-input" 
+        placeholder="Anywhere • Any week • Add guests" 
+        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+      />
+      <button class="btn btn-search rounded-circle" type="submit" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </form>
+
+    <!-- Mobile Search Toggle & Navbar Toggler -->
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add new Listings</a>
-        
+
+    <!-- Nav Links & User Menu -->
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
+      <!-- Mobile Search Form -->
+      <form class="d-flex d-md-none search-bar-container my-2 align-items-center w-100" action="/listings" method="GET">
+        <input 
+          type="text" 
+          name="search" 
+          class="form-control border-0 shadow-none search-input" 
+          placeholder="Search destinations..." 
+          value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+        />
+        <button class="btn btn-search rounded-circle" type="submit" aria-label="Search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <div class="navbar-nav align-items-center gap-2">
+        <a class="nav-link host-link px-3 py-2 rounded-pill fw-semibold" href="/listings/new">
+          Wandernest your home
+        </a>
+
+        <!-- User Dropdown Menu -->
+        <div class="nav-item dropdown">
+          <button 
+            class="btn user-profile-btn d-flex align-items-center gap-2 rounded-pill border px-3 py-1 shadow-sm dropdown-toggle" 
+            type="button" 
+            id="userMenuDropdown" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+            <i class="fa-solid fa-bars text-secondary fs-6"></i>
+            <div class="user-avatar-circle">
+              <% if (currUser) { %>
+                <span class="user-avatar-initial"><%= currUser.username.charAt(0).toUpperCase() %></span>
+              <% } else { %>
+                <i class="fa-solid fa-circle-user text-secondary fs-5"></i>
+              <% } %>
+            </div>
+          </button>
+          
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 py-2 mt-2 user-menu" aria-labelledby="userMenuDropdown">
+            <% if (!currUser) { %>
+              <li><a class="dropdown-item fw-semibold py-2" href="/signup">Sign up</a></li>
+              <li><a class="dropdown-item py-2" href="/login">Log in</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item py-2" href="/listings/new">Wandernest your home</a></li>
+              <li><a class="dropdown-item py-2 text-muted" href="#">Help Center</a></li>
+            <% } else { %>
+              <li class="px-3 py-2 text-muted small">
+                Logged in as <strong class="text-dark"><%= currUser.username %></strong>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item py-2" href="/listings">Explore Listings</a></li>
+              <li><a class="dropdown-item py-2" href="/listings/new">Add New Listing</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item py-2 text-danger fw-semibold" href="/logout">Log out</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </nav>

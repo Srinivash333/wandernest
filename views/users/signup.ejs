@@ -1,0 +1,77 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2 col-lg-5 offset-lg-3">
+            <div class="card border rounded-4 p-4 shadow-sm bg-white auth-card">
+                <div class="text-center mb-4">
+                    <i class="fa-solid fa-compass brand-icon display-5 mb-2"></i>
+                    <h3 class="fw-bold">Welcome to Wandernest</h3>
+                    <p class="text-secondary small">Create an account to discover and book extraordinary stays around the globe.</p>
+                </div>
+
+                <form action="/signup" method="POST" novalidate class="needs-validation">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-user text-muted"></i></span>
+                            <input 
+                                name="username" 
+                                id="username" 
+                                type="text" 
+                                class="form-control rounded-end-3" 
+                                placeholder="e.g. wanderer_srinivas" 
+                                required
+                            >
+                            <div class="invalid-feedback">Please choose a username.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-envelope text-muted"></i></span>
+                            <input 
+                                name="email" 
+                                id="email" 
+                                type="email" 
+                                class="form-control rounded-end-3" 
+                                placeholder="name@example.com" 
+                                required
+                            >
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-lock text-muted"></i></span>
+                            <input 
+                                name="password" 
+                                id="password" 
+                                type="password" 
+                                class="form-control rounded-end-3" 
+                                placeholder="Create a secure password" 
+                                minlength="6"
+                                required
+                            >
+                            <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                        </div>
+                        <small class="text-muted">Password will be securely encrypted with bcrypt.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-reserve w-100 py-3 rounded-pill text-white fw-bold shadow-sm mb-3">
+                        Create Account
+                    </button>
+
+                    <div class="text-center">
+                        <p class="text-secondary small mb-0">
+                            Already have an account? <a href="/login" class="fw-bold text-dark text-decoration-underline">Log in</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

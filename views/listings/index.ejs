@@ -1,29 +1,145 @@
 <% layout("layouts/boilerplate") %>
 
-<body>
-    <h3>All Listings</h3>
-
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-     <% for(let listing of allListings){ %>
-
-        <a href="/listings/<%= listing._id %>" class="listing-link">
-
-        <div class="card col listing-card">
-
-            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height:20rem;">
-            <div class="card-img-overlay"></div>
-
-            <div class="card-body">
-                <p class="card-text">
-                    <b><%= listing.title %></b> <br/>₹<%= listing.price %>/night
-                </p>
-            </div>
-
+<!-- Airbnb Category Bar & Tax Switch -->
+<div class="filters-container-wrapper border-bottom bg-white py-3 sticky-filter-bar">
+    <div class="container-fluid px-3 px-md-5 d-flex align-items-center justify-content-between gap-3">
+        <!-- Horizontal Scrollable Category Icons -->
+        <div class="filters-scroll-bar d-flex align-items-center gap-4">
+            <a href="/listings" class="filter-item text-decoration-none <%= (!activeCategory || activeCategory === 'All') ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-border-all"></i>
+                <p>All</p>
+            </a>
+            <a href="/listings?category=Trending" class="filter-item text-decoration-none <%= activeCategory === 'Trending' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-fire"></i>
+                <p>Trending</p>
+            </a>
+            <a href="/listings?category=Rooms" class="filter-item text-decoration-none <%= activeCategory === 'Rooms' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-bed"></i>
+                <p>Rooms</p>
+            </a>
+            <a href="/listings?category=Iconic Cities" class="filter-item text-decoration-none <%= activeCategory === 'Iconic Cities' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-mountain-city"></i>
+                <p>Iconic Cities</p>
+            </a>
+            <a href="/listings?category=Mountains" class="filter-item text-decoration-none <%= activeCategory === 'Mountains' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-mountain"></i>
+                <p>Mountains</p>
+            </a>
+            <a href="/listings?category=Castles" class="filter-item text-decoration-none <%= activeCategory === 'Castles' ? 'active-filter' : '' %>">
+                <i class="fa-brands fa-fort-awesome"></i>
+                <p>Castles</p>
+            </a>
+            <a href="/listings?category=Amazing Pools" class="filter-item text-decoration-none <%= activeCategory === 'Amazing Pools' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-person-swimming"></i>
+                <p>Amazing Pools</p>
+            </a>
+            <a href="/listings?category=Camping" class="filter-item text-decoration-none <%= activeCategory === 'Camping' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-campground"></i>
+                <p>Camping</p>
+            </a>
+            <a href="/listings?category=Farms" class="filter-item text-decoration-none <%= activeCategory === 'Farms' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-cow"></i>
+                <p>Farms</p>
+            </a>
+            <a href="/listings?category=Arctic" class="filter-item text-decoration-none <%= activeCategory === 'Arctic' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-snowflake"></i>
+                <p>Arctic</p>
+            </a>
+            <a href="/listings?category=Beach" class="filter-item text-decoration-none <%= activeCategory === 'Beach' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-umbrella-beach"></i>
+                <p>Beach</p>
+            </a>
+            <a href="/listings?category=Boats" class="filter-item text-decoration-none <%= activeCategory === 'Boats' ? 'active-filter' : '' %>">
+                <i class="fa-solid fa-sailboat"></i>
+                <p>Boats</p>
+            </a>
         </div>
 
-        </a>
-
-    <% } %>
+        <!-- Tax Switch Toggle -->
+        <div class="tax-toggle-wrapper d-none d-lg-flex align-items-center border rounded-4 px-3 py-2">
+            <div class="form-check form-switch form-check-reverse m-0 d-flex align-items-center gap-2">
+                <input class="form-check-input cursor-pointer" type="checkbox" role="switch" id="taxSwitch">
+                <label class="form-check-label small fw-semibold cursor-pointer user-select-none" for="taxSwitch">
+                    Display total after taxes
+                </label>
+            </div>
+        </div>
+    </div>
 </div>
 
-</body>
+<!-- Main Listings Grid -->
+<div class="container-fluid px-3 px-md-5 mt-4">
+    <!-- Search Query or Filter Active Notification -->
+    <% if (searchQuery) { %>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="fw-semibold m-0">Search results for "<%= searchQuery %>"</h4>
+            <a href="/listings" class="btn btn-sm btn-outline-dark rounded-pill px-3">Clear search</a>
+        </div>
+    <% } else if (activeCategory && activeCategory !== 'All') { %>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="fw-semibold m-0"><%= activeCategory %> Stays</h4>
+            <a href="/listings" class="btn btn-sm btn-outline-dark rounded-pill px-3">View all stays</a>
+        </div>
+    <% } %>
+
+    <% if (allListings && allListings.length > 0) { %>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <% for (let listing of allListings) { %>
+                <div class="col">
+                    <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                        <div class="card listing-card border-0 h-100">
+                            <!-- Image Container with Hover zoom and Wishlist icon -->
+                            <div class="listing-img-container position-relative overflow-hidden rounded-4">
+                                <img 
+                                    src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80' %>" 
+                                    class="card-img-top listing-img" 
+                                    alt="<%= listing.title %>"
+                                    loading="lazy"
+                                >
+                                <button class="btn wishlist-btn position-absolute top-0 end-0 m-2 border-0 text-white p-2" type="button" aria-label="Favorite">
+                                    <i class="fa-solid fa-heart wishlist-heart"></i>
+                                </button>
+                                <% if (listing.category) { %>
+                                    <span class="badge category-badge position-absolute top-0 start-0 m-2 bg-dark bg-opacity-75 rounded-pill px-2 py-1">
+                                        <%= listing.category %>
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body p-2 pt-3">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <h6 class="card-title fw-bold text-truncate mb-0" title="<%= listing.title %>">
+                                        <%= listing.location %>, <%= listing.country %>
+                                    </h6>
+                                    <div class="d-flex align-items-center gap-1 small text-dark fw-semibold">
+                                        <i class="fa-solid fa-star star-gold"></i>
+                                        <span><%= listing.reviews && listing.reviews.length > 0 ? (4.5 + (listing.reviews.length * 0.1 > 0.4 ? 0.4 : listing.reviews.length * 0.1)).toFixed(2) : "New" %></span>
+                                    </div>
+                                </div>
+                                <p class="card-text text-secondary small text-truncate mb-1">
+                                    <%= listing.title %>
+                                </p>
+                                <div class="price-container">
+                                    <span class="fw-bold fs-6">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : 0 %></span>
+                                    <span class="text-secondary small"> / night</span>
+                                    <span class="tax-info text-secondary small ms-1 d-none">+18% GST (₹<%= Math.round((listing.price || 0) * 1.18).toLocaleString("en-IN") %> total)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    <% } else { %>
+        <!-- Empty State -->
+        <div class="empty-state text-center py-5 my-5">
+            <div class="empty-state-icon mb-3">
+                <i class="fa-solid fa-magnifying-glass-location text-muted display-4"></i>
+            </div>
+            <h4 class="fw-bold">No stays found</h4>
+            <p class="text-secondary">Try adjusting your search or filter to find what you are looking for.</p>
+            <a href="/listings" class="btn btn-outline-dark rounded-pill px-4 mt-2">Reset filters</a>
+        </div>
+    <% } %>
+</div>
